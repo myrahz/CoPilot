@@ -36,6 +36,8 @@ namespace CoPilot
 
         private readonly int mouseAutoSnapRange = 250;
         private DateTime lastPhaserun = new DateTime();
+		private DateTime lastSmokeMine = new DateTime();
+        private DateTime lastMoveSkill = new DateTime();
         private DateTime lastMoltenShell = new DateTime();
         private DateTime lastWarCry = new DateTime();
         private DateTime lastTimeAny = new DateTime();
@@ -443,6 +445,50 @@ namespace CoPilot
                                 LogError(e.ToString());
                             }
                         }
+                        #endregion
+						
+						#region Flame Dash / Smoke Mine          
+                                                                                                                
+                        if (Settings.flameDashSmokeMineEnabled && Keyboard.IsKeyDown((int)Settings.flameDashSmokeMineKey.Value) ) // and key is pressed
+
+
+                        {
+                            try
+                            {
+                                if ((DateTime.Now - lastSmokeMine).TotalMilliseconds < Settings.smokeMineTimeWindow.Value && buffs.Exists(x => x.Name == "mine_mana_reservation")) //only if smoke mine was used on the last 0.2 secs
+                                {                          
+                                    KeyPress(Settings.detonateMinesKey); //detonate mines if we've cast smoke mine recently
+                                    
+                                }
+                                if (                                 
+                                    !buffs.Exists(x => x.Name == "smoke_mine_movement_speed") && // we dont have smoke mine buff
+                                    (DateTime.Now - lastMoveSkill).TotalMilliseconds > Settings.moveSkillDelay.Value && // we havent used a movement skill in a short time
+                                    skill.Id == SkillInfo.smokeMine.Id)
+                                {
+                                    KeyPress(Settings.smokeMineKey); //cast smoke mine
+                                    lastSmokeMine = DateTime.Now;
+                                }
+                                else if (buffs.Exists(x => x.Name == "smoke_mine_movement_speed" && x.Timer * 1000 < Settings.smokeMineBuffRemaining.Value) && 
+                                (DateTime.Now - lastMoveSkill).TotalMilliseconds > Settings.moveSkillDelay.Value &&
+                                skill.Id == SkillInfo.smokeMine.Id)
+                                {
+                                    KeyPress(Settings.smokeMineKey);                                  
+                                    lastMoveSkill = DateTime.Now;
+                                }
+                                else if (buffs.Exists(x => x.Name == "smoke_mine_movement_speed") && skill.Id == SkillInfo.flameDash.Id)
+                                {
+                                    KeyPress(Settings.flameDashKey);                      
+                                    lastMoveSkill = DateTime.Now;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                LogError(e.ToString());
+                            }
+                        }
+
+
+
                         #endregion
 
                         #region Molten Shell / Steelskin / Bone Armour / Arcane Cloak

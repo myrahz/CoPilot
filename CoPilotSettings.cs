@@ -22,6 +22,18 @@ namespace CoPilot
         public ToggleNode phaserunEnabled = new ToggleNode(false);
         public RangeNode<int> phaserunDelay = new RangeNode<int>(4000, 100, 4100);
         #endregion
+		
+		#region Flame dash smoke mine
+        public ToggleNode flameDashSmokeMineEnabled = new ToggleNode(false);
+        public HotkeyNode flameDashSmokeMineKey = new HotkeyNode(Keys.T);
+        public HotkeyNode flameDashKey = new HotkeyNode(Keys.E);
+        public HotkeyNode smokeMineKey = new HotkeyNode(Keys.R);
+        public HotkeyNode detonateMinesKey = new HotkeyNode(Keys.D);        
+        public RangeNode<int> smokeMineBuffRemaining = new RangeNode<int>(200, 1000, 2000);
+        public RangeNode<int> smokeMineTimeWindow = new RangeNode<int>(200, 500, 1000);
+        public RangeNode<int> moveSkillDelay = new RangeNode<int>(200, 500, 1000);
+
+        #endregion
 
         #region Molten Shell
         public ToggleNode moltenShellEnabled = new ToggleNode(false);

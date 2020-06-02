@@ -351,6 +351,30 @@ namespace CoPilot
                 CoPilot.instance.LogError(e.ToString());
             }
 
+			try
+            {
+                if (CoPilot.instance.Settings.flameDashSmokeMineEnabled)
+                    ImGui.PushStyleColor(ImGuiCol.Header, green);
+                else
+                    ImGui.PushStyleColor(ImGuiCol.Header, red);
+                ImGui.PushID(15);
+                if (ImGui.TreeNodeEx("Flame Dash and Smoke Mine Cycle", collapsingHeaderFlags))
+                {
+                    CoPilot.instance.Settings.debugMode.Value = ImGuiExtension.Checkbox("Debug Mode", CoPilot.instance.Settings.debugMode.Value);
+                    CoPilot.instance.Settings.flameDashSmokeMineEnabled.Value = ImGuiExtension.Checkbox("Enabled", CoPilot.instance.Settings.flameDashSmokeMineEnabled.Value);
+                    CoPilot.instance.Settings.flameDashSmokeMineKey.Value = ImGuiExtension.HotkeySelector("Key to move: " + CoPilot.instance.Settings.flameDashSmokeMineKey.Value, CoPilot.instance.Settings.flameDashSmokeMineKey);
+                    CoPilot.instance.Settings.flameDashKey.Value = ImGuiExtension.HotkeySelector("Flame dash key : " + CoPilot.instance.Settings.flameDashKey.Value, CoPilot.instance.Settings.flameDashKey);
+                    CoPilot.instance.Settings.smokeMineKey.Value = ImGuiExtension.HotkeySelector("Smoke Mine key : " + CoPilot.instance.Settings.smokeMineKey.Value, CoPilot.instance.Settings.smokeMineKey);
+                    CoPilot.instance.Settings.smokeMineTimeWindow.Value = ImGuiExtension.IntSlider("Auto detonate mines from smoke mine window", CoPilot.instance.Settings.smokeMineTimeWindow);
+                    CoPilot.instance.Settings.moveSkillDelay.Value = ImGuiExtension.IntSlider("Move skill delay", CoPilot.instance.Settings.moveSkillDelay);
+                    CoPilot.instance.Settings.smokeMineBuffRemaining.Value = ImGuiExtension.IntSlider("Max Smoke Mine Buff Duration until refresh", CoPilot.instance.Settings.smokeMineBuffRemaining);
+                    CoPilot.instance.Settings.detonateMinesKey.Value = ImGuiExtension.HotkeySelector("Detonate mine Key: " + CoPilot.instance.Settings.detonateMinesKey.Value, CoPilot.instance.Settings.detonateMinesKey);
+                }
+            }
+            catch (Exception e)
+            {
+                CoPilot.instance.LogError(e.ToString());
+            }
 
 
 

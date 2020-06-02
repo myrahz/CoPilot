@@ -36,6 +36,8 @@ namespace CoPilot
         internal static Skill brandRecall = new Skill();
         internal static Skill cyclone = new Skill();
         internal static Skill iceNova = new Skill();
+		internal static Skill smokeMine = new Skill();
+        internal static Skill flameDash = new Skill();
 
 
 
@@ -169,6 +171,14 @@ namespace CoPilot
                 else if (skill.InternalName == "ice_nova")
                 {
                     iceNova.Id = skill.Id;
+                } 
+				else if (skill.InternalName == "smoke_mine")
+                {
+                    smokeMine.Id = skill.Id;
+                }
+                else if (skill.InternalName == "flame_dash")
+                {
+                    flameDash.Id = skill.Id;
                 }
             }
         }
