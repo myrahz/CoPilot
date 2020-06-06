@@ -446,20 +446,37 @@ namespace CoPilot
                             }
                         }
                         #endregion
-						
-						#region Flame Dash / Smoke Mine          
-                                                                                                                
-                        if (Settings.flameDashSmokeMineEnabled && Keyboard.IsKeyDown((int)Settings.flameDashSmokeMineKey.Value) ) // and key is pressed
+
+                        #region Flame Dash / Smoke Mine   
+
+                        if (Settings.flameDashSmokeMineEnabled && (DateTime.Now - lastSmokeMine).TotalMilliseconds < Settings.smokeMineTimeWindow.Value && buffs.Exists(x => x.Name == "mine_mana_reservation")) // and key is pressed
 
 
                         {
                             try
                             {
                                 if ((DateTime.Now - lastSmokeMine).TotalMilliseconds < Settings.smokeMineTimeWindow.Value && buffs.Exists(x => x.Name == "mine_mana_reservation")) //only if smoke mine was used on the last 0.2 secs
-                                {                          
+                                {
                                     KeyPress(Settings.detonateMinesKey); //detonate mines if we've cast smoke mine recently
-                                    
+
                                 }
+                                
+                            }
+                            catch (Exception e)
+                            {
+                                LogError(e.ToString());
+                            }
+                        }
+
+
+
+                        if (Settings.flameDashSmokeMineEnabled && Keyboard.IsKeyDown((int)Settings.flameDashSmokeMineKey.Value) ) // and key is pressed
+
+
+                        {
+                            try
+                            {
+                                
                                 if (                                 
                                     !buffs.Exists(x => x.Name == "smoke_mine_movement_speed") && // we dont have smoke mine buff
                                     (DateTime.Now - lastMoveSkill).TotalMilliseconds > Settings.moveSkillDelay.Value && // we havent used a movement skill in a short time
