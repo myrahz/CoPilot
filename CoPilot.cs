@@ -449,17 +449,19 @@ namespace CoPilot
 
                         #region Flame Dash / Smoke Mine   
 
-                        if (Settings.flameDashSmokeMineEnabled && (DateTime.Now - lastSmokeMine).TotalMilliseconds < Settings.smokeMineTimeWindow.Value && buffs.Exists(x => x.Name == "mine_mana_reservation")) // and key is pressed
-
+                        if (Settings.flameDashSmokeMineEnabled && 
+                            (DateTime.Now - lastSmokeMine).TotalMilliseconds < Settings.smokeMineTimeWindow.Value &&
+                            buffs.Exists(x => x.Name == "mine_mana_reservation")) 
+                             
 
                         {
+                            //LogMessage("Detonate mine");
                             try
                             {
-                                if ((DateTime.Now - lastSmokeMine).TotalMilliseconds < Settings.smokeMineTimeWindow.Value && buffs.Exists(x => x.Name == "mine_mana_reservation")) //only if smoke mine was used on the last 0.2 secs
-                                {
+                                
                                     KeyPress(Settings.detonateMinesKey); //detonate mines if we've cast smoke mine recently
 
-                                }
+                                
                                 
                             }
                             catch (Exception e)
@@ -479,21 +481,28 @@ namespace CoPilot
                                 
                                 if (                                 
                                     !buffs.Exists(x => x.Name == "smoke_mine_movement_speed") && // we dont have smoke mine buff
-                                    (DateTime.Now - lastMoveSkill).TotalMilliseconds > Settings.moveSkillDelay.Value && // we havent used a movement skill in a short time
+                                    (DateTime.Now - lastMoveSkill).TotalMilliseconds > Settings.moveSkillDelay.Value &&// we havent used a movement skill in a short time
+                                    
                                     skill.Id == SkillInfo.smokeMine.Id)
                                 {
+                                    //LogMessage("Cast Smoke Mine 1");
                                     KeyPress(Settings.smokeMineKey); //cast smoke mine
                                     lastSmokeMine = DateTime.Now;
+                                    lastMoveSkill = DateTime.Now;
+
                                 }
                                 else if (buffs.Exists(x => x.Name == "smoke_mine_movement_speed" && x.Timer * 1000 < Settings.smokeMineBuffRemaining.Value) && 
                                 (DateTime.Now - lastMoveSkill).TotalMilliseconds > Settings.moveSkillDelay.Value &&
                                 skill.Id == SkillInfo.smokeMine.Id)
                                 {
-                                    KeyPress(Settings.smokeMineKey);                                  
+                                    //LogMessage("Cast Smoke Mine 2");
+                                    KeyPress(Settings.smokeMineKey);
+                                    lastSmokeMine = DateTime.Now;
                                     lastMoveSkill = DateTime.Now;
                                 }
                                 else if (buffs.Exists(x => x.Name == "smoke_mine_movement_speed") && skill.Id == SkillInfo.flameDash.Id)
                                 {
+                                    //LogMessage("Cast Flame Dash");
                                     KeyPress(Settings.flameDashKey);                      
                                     lastMoveSkill = DateTime.Now;
                                 }
